@@ -6,5 +6,8 @@ class Cell
     @ship = nil
     @fire_upon = false
   end
-end
 
+  def empty?
+    @ship.nil?
+  end
+end
