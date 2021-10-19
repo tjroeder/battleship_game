@@ -39,4 +39,17 @@ RSpec.describe Cell do
       expect(@cell.ship).to eq(@cruiser)
     end
   end
+
+  describe '#fire_upon and #fired_upon?' do
+    it 'initially not fire_upon' do
+      expect(@cell.fired_upon?).to eq(false)
+    end
+  
+    it 'change status once fire_upon' do
+      @cell.place_ship(@cruiser)
+      @cell.fire_upon
+      expect(@cell.ship.health).to eq(2)
+      expect(@cell.fired_upon?).to eq(true)
+    end
+  end
 end
