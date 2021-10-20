@@ -26,7 +26,7 @@ RSpec.describe Cell do
     it 'initially is empty' do
       expect(@cell.empty?).to eq(true)
     end
-  
+
     it 'can have a ship' do
       @cell.place_ship(@cruiser)
       expect(@cell.empty?).to eq(false)
@@ -44,7 +44,7 @@ RSpec.describe Cell do
     it 'initially not fire_upon' do
       expect(@cell.fired_upon?).to eq(false)
     end
-  
+
     it 'change status once fire_upon' do
       @cell.place_ship(@cruiser)
       @cell.fire_upon
@@ -52,4 +52,49 @@ RSpec.describe Cell do
       expect(@cell.fired_upon?).to eq(true)
     end
   end
+
+  describe '#render' do
+    it 'initially has not been fire_upon' do
+      expect(@cell.render).to eq(".")
+    end
+
+    it 'change status to a miss once fire_upon and there is no ship' do
+      @cell.fire_upon
+      expect(@cell.empty?).to eq(true)
+      expect(@cell.render).to eq("M")
+    end
+
+    it 'change status to a hit once fire_upon and there is a ship' do
+      @cell.place_ship(@cruiser)
+      @cell.fire_upon
+      expect(@cell.empty?).to eq(false)
+      expect(@cruiser.sunk?).to eq(false)
+      expect(@cell.render).to eq("H")
+    end
+
+    it 'change status if the ship is sunk' do
+      @cell.place_ship(@cruiser)
+      @cell.fire_upon
+      @cruiser.hit
+      @cruiser.hit
+      expect(@cell.empty?).to eq(false)
+      expect(@cruiser.sunk?).to eq(true)
+      expect(@cell.render).to eq("X")
+    end
+
+    it 'status stays the same when render(false) is given' do
+      expect(@cell.render(false)).to eq(".")
+      @cell.place_ship(@cruiser)
+      expect(@cell.render(false)).to eq(".")
+    end
+    
+    it 'change status to S if there is a ship in the cell even if it has not been fire_upon' do
+      @cell.place_ship(@cruiser)
+      expect(@cell.empty?).to eq(false)
+      expect(@cell.render(true)).to eq("S")
+    end
+
+
+  end
+
 end
