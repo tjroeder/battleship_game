@@ -77,7 +77,6 @@ RSpec.describe Cell do
       @cell.fire_upon
       @cruiser.hit
       @cruiser.hit
-      require "pry"; binding.pry 
       expect(@cell.empty?).to eq(false)
       expect(@cruiser.sunk?).to eq(true)
       expect(@cell.render).to eq("X")
@@ -94,8 +93,5 @@ RSpec.describe Cell do
       expect(@cell.empty?).to eq(false)
       expect(@cell.render(true)).to eq("S")
     end
-
-
   end
-
 end

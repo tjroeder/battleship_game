@@ -1,10 +1,10 @@
 class Cell
-  attr_accessor :coordinate, :ship, :fire_upon
+  attr_accessor :coordinate, :ship, :shot_status
 
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
-    @fire_upon = false
+    @shot_status = false
   end
 
   def empty?
@@ -16,14 +16,14 @@ class Cell
   end
 
   def fired_upon?
-    @fire_upon
+    @shot_status
   end
 
   def fire_upon
     if !empty?
       @ship.hit
     end
-    @fire_upon = true
+    @shot_status = true
   end
 
   def render(show = false)
