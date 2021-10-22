@@ -32,7 +32,7 @@ RSpec.describe Ship do
     # Test if Ship is initially not sunk.
     it 'initially is not sunk' do
       expect(@cruiser.sunk?).to eq(false)
-    end 
+    end
 
     # Test if Ship is hit it will not sink if it still has health.
     it 'can be hit' do
