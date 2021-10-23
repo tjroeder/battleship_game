@@ -1,14 +1,15 @@
 require './lib/cell'
 
 class Board
-  attr_accessor :board_hash
+  attr_accessor :board_hash, :row_array
 
   def initialize
     @board_hash = {}
+    @row_array = []
   end
 
   def selected_rows(rows_num)
-    ('A'.."#{(rows_num + 64).chr}").to_a
+    @row_array = ('A'.."#{(rows_num + 64).chr}").to_a
   end
 
   # I don't think I need this while using the times loop in #cells.
@@ -55,5 +56,22 @@ class Board
     coordinates.each do |sel_coord|
       @board_hash[sel_coord].place_ship(ship)
     end
+  end
+
+  def render(show = false)
+    render_string = ''
+    @board_hash.each_value do |cell_obj|
+      render_string << cell_obj.render(show)
+    end
+
+    output = ''
+    counter = 0
+    render_string.gsub(/.{4}/) do |blanks|
+      output << @row_array[counter] + blanks + "\n"
+      counter += 1
+    end
+    
+    # 1234 string is a placeholder. Need to update for dynamic board.
+    output = "  " +  output.prepend("1234\n").gsub(/./) { |s| s + ' ' }
   end
 end

@@ -22,9 +22,11 @@ RSpec.describe Board do
     it 'can return user selected row amount' do
       expected = ['A', 'B', 'C', 'D', 'E', 'F']
       expect(board.selected_rows(6)).to eq(expected)
+      expect(board.row_array).to eq(expected)
 
       expected = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
       expect(board.selected_rows(8)).to eq(expected)
+      expect(board.row_array).to eq(expected)
     end
   end
 
@@ -114,6 +116,26 @@ RSpec.describe Board do
       expect(cell_2.ship).to eq(cruiser)
       expect(cell_3.ship).to eq(cruiser)
       expect(cell_3.ship == cell_2.ship).to eq(true)
+    end
+  end
+
+  describe '#render' do
+    it 'can string for rendering' do
+      board.cells
+      board.selected_rows(4)
+      board.place(cruiser, ['A1', 'A2', 'A3'])
+
+      expected = "  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n"
+      expect(board.render).to eq(expected)
+    end
+    
+    it 'can string for rendering showing hidden ships' do
+      board.cells
+      board.selected_rows(4)
+      board.place(cruiser, ['A1', 'A2', 'A3'])
+  
+      expected = "  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n"
+      expect(board.render(true)).to eq(expected)
     end
   end
 end

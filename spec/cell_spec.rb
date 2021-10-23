@@ -89,7 +89,10 @@ RSpec.describe Cell do
     end
 
     it 'change status to S if there is a ship in the cell even if it has not been fire_upon' do
+      expect(@cell.render(true)).to eq(".")
+      
       @cell.place_ship(@cruiser)
+
       expect(@cell.empty?).to eq(false)
       expect(@cell.render(true)).to eq("S")
     end
