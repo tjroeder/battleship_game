@@ -39,6 +39,7 @@ class Board
     end &&
     coordinates.all? do |sel_coord|
       @board_hash[sel_coord].empty?
+    end
   end
   
   def place(ship, coordinates)
