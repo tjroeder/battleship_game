@@ -27,7 +27,6 @@ class Cell
   end
 
   def render(show = false)
-
     if empty? && fired_upon?
       "M"
     elsif fired_upon? && !@ship.sunk?
