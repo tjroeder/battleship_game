@@ -18,6 +18,16 @@ RSpec.describe Board do
     end
   end
 
+  describe '#selected_rows' do
+    it 'can return user selected row amount' do
+      expected = ['A', 'B', 'C', 'D', 'E', 'F']
+      expect(board.selected_rows(6)).to eq(expected)
+
+      expected = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+      expect(board.selected_rows(8)).to eq(expected)
+    end
+  end
+
   describe '#cells' do
     it 'creates hash of cell data' do
       board.cells

@@ -7,6 +7,15 @@ class Board
     @board_hash = {}
   end
 
+  def selected_rows(rows_num)
+    ('A'.."#{(rows_num + 64).chr}").to_a
+  end
+
+  # I don't think I need this while using the times loop in #cells.
+  # def selected_col(col_num)
+  #   ('1'.."#{col_num}").to_a
+  # end
+
   def cells
     combined = []
     col = 4
