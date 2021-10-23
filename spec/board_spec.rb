@@ -128,7 +128,39 @@ RSpec.describe Board do
       expected = "  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n"
       expect(board.render).to eq(expected)
     end
+
+    it 'can have misses rendered' do
+      board.cells
+      board.selected_rows(4)
+      board.place(cruiser, ['A1', 'A2', 'A3'])
+      board.board_hash['A4'].fire_upon
+      board.board_hash['B3'].fire_upon
+
+      expected = "  1 2 3 4 \nA . . . M \nB . . M . \nC . . . . \nD . . . . \n"
+      expect(board.render).to eq(expected)
+    end
     
+    it 'can have hits rendered' do
+      board.cells
+      board.selected_rows(4)
+      board.place(cruiser, ['A1', 'A2', 'A3'])
+      board.board_hash['A1'].fire_upon
+      board.board_hash['A2'].fire_upon
+      expected = "  1 2 3 4 \nA H H . . \nB . . . . \nC . . . . \nD . . . . \n"
+      expect(board.render).to eq(expected)
+    end
+
+    it 'can have sunk ships rendered' do
+      board.cells
+      board.selected_rows(4)
+      board.place(cruiser, ['A1', 'A2', 'A3'])
+      board.board_hash['A1'].fire_upon
+      board.board_hash['A2'].fire_upon
+      board.board_hash['A3'].fire_upon
+      expected = "  1 2 3 4 \nA X X X . \nB . . . . \nC . . . . \nD . . . . \n"
+      expect(board.render).to eq(expected)
+    end
+
     it 'can string for rendering showing hidden ships' do
       board.cells
       board.selected_rows(4)
