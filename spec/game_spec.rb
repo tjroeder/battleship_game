@@ -45,4 +45,24 @@ RSpec.describe Game do
     end
   end
 
+  describe '#start_game' do
+    it 'prints required text to the user' do
+      expected = "PLACE SHIPS\n" +
+      "I have laid out my ships on the grid.\n" +
+      "You now need to lay out your two ships.\n" +
+      "The Cruiser is three units long and the Submarine is two units long.\n" +
+      "#{board_hash}\n" +
+      "Enter the squares for the Cruiser (3 spaces)\n>"
+
+      expect(game.start_game).to eq(expected)
+    end
+  end
 end
+
+#   describe '#check_user_coordinates' do
+#     it 'can confirm if input is valid'
+#     # if valid, place ship
+#     #if not valid, ask again to place ship
+#
+#   end
+# end
