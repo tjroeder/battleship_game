@@ -2,10 +2,13 @@ require './lib/board'
 require './lib/game'
 
 RSpec.describe Game do
-  let!(:game) {Game.new}
+  let!(:user_board) {Board.new}
+  let!(:npc_board) {Board.new}
+  let!(:game) {Game.new(user_board, npc_board)}
 
   describe '#initialize' do
     it 'exists' do
+      # game = Game.new(user_board, npc_board)
       expect(game).to be_instance_of(Game)
     end
 
@@ -22,11 +25,11 @@ RSpec.describe Game do
   end
 
   describe '#main_menu_check' do
-    it 'quits the game' do
-      user_input = 'q'
+    # it 'quits the game' do
+    #   user_input = 'q'
 
-      expect(game.main_menu_check(user_input)).to raise_error(SystemError)
-    end
+    #   expect(game.main_menu_check(user_input)).to raise_error(SystemError)
+    # end
 
     it 'recognizes wrong input' do
       user_input = '7'
