@@ -3,9 +3,9 @@ require './lib/board'
 class Game
   attr_accessor :user_board, :npc_board
 
-  def initialize
-    @user_board = Board.new
-    @npc_board = Board.new
+  def initialize(user_board, npc_board)
+    @user_board = user_board
+    @npc_board = npc_board
   end
 
 
@@ -17,7 +17,7 @@ class Game
 
   def main_menu_check(input)
     if input == 'q'
-      exit!
+      # exit!
     elsif input != 'p'
       "Wrong input, enter p to play or q to quit"
     else
