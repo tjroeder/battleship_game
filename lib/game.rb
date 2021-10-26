@@ -4,7 +4,12 @@ require './lib/board'
 require './lib/computer'
 
 class Game
-  attr_accessor :user_board, :user_ships, :npc, :npc_ships, :num_to_name
+  attr_accessor :user_board, 
+                :user_ships, 
+                :npc, 
+                :npc_ships, 
+                :num_to_name, 
+                :render_to_name
   
   def initialize
     @user_board = ''
@@ -35,13 +40,15 @@ class Game
     "Welcome to BATTLESHIP\nEnter p to play or q to quit"
   end
 
-  def main_menu_check(input)
-    if input == 'q'
-      exit!
-    elsif input != 'p'
-      "Wrong input, enter p to play or q to quit"
-    else
-      return true
+  # rewrite test
+  def main_menu_check
+    input = user_input
+    until input == 'p'
+      if input == 'q'
+        exit!
+      end
+      puts "Wrong input, enter p to play or q to quit"
+      input = user_input
     end
   end
 
@@ -101,18 +108,18 @@ class Game
   end
 
   def show_user_ships_setup
-    "#{@user_board.render(true)}"
+    "\n#{@user_board.render(true)}"
   end
 
   def setup_board
     create_objects
     puts start_game
-    @user_ships.each |ship| do
-      puts user_placement_selection(ship)
+    @user_ships.each do |ship|
+      print user_placement_selection(ship)
       user_place_location = convert_user_coord(user_input)
 
       until place_user_ship(ship, user_place_location)
-        puts invalid_coord
+        print invalid_coord
         user_place_location = convert_user_coord(user_input)
       end
       puts show_user_ships_setup
@@ -122,12 +129,14 @@ class Game
   def turn
     puts display
     user_shot_location = user_shot_turn
+    @npc.board.board_hash[user_shot_location].fire_upon
     npc_shot_location = npc_shot_turn
-    puts results(user_shot_location, npc_shot_location)
+    @user_board.board_hash[npc_shot_location].fire_upon
+    print results(user_shot_location, npc_shot_location)
   end
 
   def display
-    "=============COMPUTER BOARD=============\n" +
+    "\n=============COMPUTER BOARD=============\n" +
     "#{@npc.board.render}\n" +
     "==============PLAYER BOARD==============\n" +
     "#{@user_board.render(true)}\n"
@@ -142,10 +151,10 @@ class Game
   end
 
   def user_shot_turn
-    puts user_shot_selection_text
+    print user_shot_selection_text
     user_shot_coord = user_input
-    when !@user_board.board_hash.include?(user_shot_coord) || @user_board.board_hash[user_shot_coord].shot_status
-      puts invalid_user_shot
+    while !@npc.board.board_hash.include?(user_shot_coord) || @npc.board.board_hash[user_shot_coord].shot_status
+      print invalid_user_shot
       user_shot_coord = user_input
     end
     user_shot_coord
@@ -156,10 +165,20 @@ class Game
   end
 
   def results(user_shot, npc_shot)
-    user_shot_word = @render_to_name[@user_board.board_hash[user_shot].render]
-    npc_shot_word = @render_to_name[@npc.board.board_hash[npc_shot].render]
+    user_shot_word = @render_to_name[@user_board.board_hash[npc_shot].render]
+    npc_shot_word = @render_to_name[@npc.board.board_hash[user_shot].render]
 
-    "Your shot on #{user_shot}, #{user_shot_word}.\n" +
-    "My shot on #{npc_shot}, #{npc_shot_word}."
+    "\nYour shot on #{user_shot}, #{npc_shot_word}.\n" +
+    "My shot on #{npc_shot}, #{user_shot_word}.\n"
+  end
+
+  def winner
+    if @user_ships.all? { |ship| ship.sunk? }
+      print "\nI won!\n\n"
+      return true
+    elsif @npc_ships.all? { |ship| ship.sunk? }
+      print "\nYou won!\n\n"
+      return true
+    end
   end
 end
