@@ -60,15 +60,17 @@ RSpec.describe Computer do
     it 'can return adjacent cell for given cell' do
       npc.board.cells
 
-      possible_cell = (['A2', 'B1', 'B3', 'C2'])
+      possible_cell = ['A2', 'B1', 'B3', 'C2']
       new_value = npc.adj_cell(['B2'])
+      check_possible = possible_cell.any? { |elem| elem == new_value.first || elem == new_value.last }
       expect(new_value.length).to eq(2)
-      expect(possible_cell.include?(new_value.last)).to eq(true)
+      expect(check_possible).to eq(true)
 
-      possible_cell = (['@1', 'A0', 'A2', 'B1'])
+      possible_cell = ['@1', 'A0', 'A2', 'B1']
       new_value = npc.adj_cell(['A1'])
+      check_possible = possible_cell.any? { |elem| elem == new_value.first || elem == new_value.last }
       expect(new_value.length).to eq(2)
-      expect(possible_cell.include?(new_value.last)).to eq(true)
+      expect(check_possible).to eq(true)
     end
 
     it 'can return the next logical cell' do
