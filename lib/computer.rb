@@ -58,7 +58,7 @@ class Computer
       # Pick a cell from the possible cells.
       array << possible_cells.sample
       # Create output array with the new coordinate.
-      output_array = array
+      output_array = array.sort
     end
     output_array
   end
@@ -82,7 +82,7 @@ class Computer
         ship_array = adj_cell(ship_array)
 
         # Check if the array has valid coordinates.
-        ship_array = valid_cells(ship_array).sort
+        ship_array = valid_cells(ship_array)
 
         # If the array has no valid coordinates after culling re-choose intial coordinate. If the initial selection is bad, after four iterations reselect seed.
         if ship_array.length == 1 || count == 4
