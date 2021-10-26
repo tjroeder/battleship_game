@@ -1,16 +1,16 @@
 require './lib/board'
 require './lib/cell'
-require './lib/gameplay'
+require './lib/game'
 require './lib/ship'
+require './lib/computer'
 
-@game = Game.new
+game = Game.new
 
-#loop here
-game.main_menu
-input = ''
-until input == 'p' || input == 'q'
-  input = game.user_input
-  puts game.main_menu_check(input)
+loop do 
+  puts game.main_menu
+  game.main_menu_check
+  game.setup_board
+  until game.winner
+    game.turn
+  end
 end
-
-#loop
