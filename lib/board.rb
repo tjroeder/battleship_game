@@ -67,11 +67,11 @@ class Board
     output = ''
     counter = 0
     render_string.gsub(/.{4}/) do |blanks|
-      output << @row_array[counter] + blanks + "\n"
+      output << (@row_array[counter] + blanks + "\n")
       counter += 1
     end
     
     # 1234 string is a placeholder. Need to update for dynamic board.
-    output = "  " +  output.prepend("1234\n").gsub(/./) { |s| s + ' ' }
+    output = "  " + output.prepend("1234\n").gsub(/./) { |s| s + ' ' }
   end
 end
