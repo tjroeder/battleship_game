@@ -4,7 +4,7 @@ require './lib/board'
 require './lib/computer'
 
 class Game
-  attr_accessor :user_board, :user_ships, :npc, :npc_ships
+  attr_accessor :user_board, :user_ships, :npc, :npc_ships, :rows, :columns
   attr_reader :num_to_name, :render_to_name
   
   # Initialize the blank objects and the helper hashes.
@@ -13,6 +13,8 @@ class Game
     @user_ships = []
     @npc = ''
     @npc_ships = []
+    @rows = 0
+    @columns = 0
     @num_to_name = {
                     10 => 'ten',
                      9 => 'nine',
@@ -40,6 +42,7 @@ class Game
 
   # Check if user would like to play the game, if not exit the game, or ask for new input.
   def main_menu_check
+    puts "here"
     input = user_input
     until input == 'p'
       if input == 'q'
@@ -52,9 +55,13 @@ class Game
   
   # Complete all of the board setup for the user and the computer.
   def setup_board
+    # Get board size from user input.
+    # puts board_size_string
+    # board_size_check
+    
     # Create game objects.
     create_objects
-
+    
     # Print the start game string.
     puts start_game
     # For each ship ask for user input and place them once the given coordinates and placement is valid.
@@ -71,7 +78,7 @@ class Game
       puts show_user_ships_setup
     end
   end
-
+  
   # Display the game boards, and shoot back and forth. Print results of combat.
   def turn
     puts display
@@ -84,7 +91,7 @@ class Game
     # Print the results of combat.
     print results(user_shot_location, npc_shot_location)
   end
-
+  
   # Select the output string depending on which player won. Can tie if both players have mutually assured destruction.
   def winner
     if @user_ships.all? { |ship| ship.sunk? } && @npc_ships.all? { |ship| ship.sunk? }
@@ -105,13 +112,38 @@ class Game
   def user_input
     input = gets.chomp
   end
+
+  def board_size_string
+    "\nWhat size board would you like?\n" +
+    "Please enter row and column number.\n"
+  end
+
+  def board_size_check
+    # Get number of rows from the user.
+    print "Rows> "
+    rows = user_input
+    until rows == /\d+/
+      puts "Wrong input, please enter a digit."
+      rows = user_input
+    end
+    @rows = rows
+
+    # Get number of columns from the user.
+    print "Columns> "
+    columns = user_input
+    until columns == /\d+/
+      puts "Wrong input, please enter a digit."
+      columns = user_input
+    end
+    @columns = columns
+  end
   
   # Create all of the battleship objects for user and npc.
   def create_objects
     # Create objects for the user.
-    @user_board = Board.new
+    @user_board = Board.new(@rows, @columns)
     @user_board.cells
-    @user_board.selected_rows(4)
+    @user_board.selected_rows
     user_cruiser = Ship.new('Cruiser', 3)
     user_submarine = Ship.new('Submarine', 2)
     @user_ships = []
@@ -124,9 +156,9 @@ class Game
     @npc_ships = []
     @npc_ships << npc_cruiser
     @npc_ships << npc_submarine
-    @npc = Computer.new(@npc_ships)
+    @npc = Computer.new(@npc_ships, @rows, @columns)
     @npc.board.cells
-    @npc.board.selected_rows(4)
+    @npc.board.selected_rows
     @npc.computer_place
   end
   
