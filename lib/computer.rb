@@ -2,8 +2,8 @@ class Computer
   attr_accessor :board, :ships
 
   # Initialize the board and save the ships given to the computer.
-  def initialize(ships)
-    @board = Board.new
+  def initialize(ships, board_rows, board_cols)
+    @board = Board.new(board_rows, board_cols)
     @ships = ships
   end
 

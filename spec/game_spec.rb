@@ -19,6 +19,14 @@ RSpec.describe Game do
       expect(game.npc_ships).to eq([])
     end
 
+    it 'has 0 rows' do
+      expect(game.rows).to eq(0)
+    end
+
+    it 'has 0 columns' do
+      expect(game.columns).to eq(0)
+    end
+
     it 'creates num_to_name helper hash' do
       expected = {  
                   10 => 'ten',
@@ -49,6 +57,14 @@ RSpec.describe Game do
   describe '#main_menu' do
     it 'prints text to the screen' do
       expect(game.main_menu).to eq("Welcome to BATTLESHIP\nEnter p to play or q to quit")
+    end
+  end
+
+  describe '#board_size_string' do
+    it 'has a board string' do
+      expected = "\nWhat size board would you like?\n" + 
+                  "Please enter row and column number.\n"
+      expect(game.board_size_string).to eq(expected)
     end
   end
 

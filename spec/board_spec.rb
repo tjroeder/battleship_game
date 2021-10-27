@@ -4,7 +4,7 @@ require './lib/ship'
 require './lib/board'
 
 RSpec.describe Board do
-  let!(:board) { Board.new }
+  let!(:board) { Board.new(4, 4) }
   let!(:cruiser) { Ship.new('Cruiser', 3) }
   let!(:submarine) { Ship.new('Submarine', 2) }
 
@@ -20,13 +20,16 @@ RSpec.describe Board do
 
   describe '#selected_rows' do
     it 'can return user selected row amount' do
+      board1 = Board.new(6, 6)
+      board2 = Board.new(8, 1)
+
       expected = ['A', 'B', 'C', 'D', 'E', 'F']
-      expect(board.selected_rows(6)).to eq(expected)
-      expect(board.row_array).to eq(expected)
+      expect(board1.selected_rows).to eq(expected)
+      expect(board1.row_array).to eq(expected)
 
       expected = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-      expect(board.selected_rows(8)).to eq(expected)
-      expect(board.row_array).to eq(expected)
+      expect(board2.selected_rows).to eq(expected)
+      expect(board2.row_array).to eq(expected)
     end
   end
 
@@ -50,6 +53,63 @@ RSpec.describe Board do
       expect(board.board_hash["D2"]).to have_attributes(:coordinate => "D2", :ship => nil, :shot_status => false)
       expect(board.board_hash["D3"]).to have_attributes(:coordinate => "D3", :ship => nil, :shot_status => false)
       expect(board.board_hash["D4"]).to have_attributes(:coordinate => "D4", :ship => nil, :shot_status => false)
+    end
+
+    it 'can create different size boards' do
+      board1 = Board.new(5, 4)
+      board1.cells
+      
+      expect(board1.board_hash["A1"]).to have_attributes(:coordinate => "A1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["A2"]).to have_attributes(:coordinate => "A2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["A3"]).to have_attributes(:coordinate => "A3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["A4"]).to have_attributes(:coordinate => "A4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B1"]).to have_attributes(:coordinate => "B1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B2"]).to have_attributes(:coordinate => "B2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B3"]).to have_attributes(:coordinate => "B3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B4"]).to have_attributes(:coordinate => "B4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C1"]).to have_attributes(:coordinate => "C1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C2"]).to have_attributes(:coordinate => "C2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C3"]).to have_attributes(:coordinate => "C3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C4"]).to have_attributes(:coordinate => "C4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D1"]).to have_attributes(:coordinate => "D1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D2"]).to have_attributes(:coordinate => "D2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D3"]).to have_attributes(:coordinate => "D3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D4"]).to have_attributes(:coordinate => "D4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E1"]).to have_attributes(:coordinate => "E1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E2"]).to have_attributes(:coordinate => "E2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E3"]).to have_attributes(:coordinate => "E3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E4"]).to have_attributes(:coordinate => "E4", :ship => nil, :shot_status => false)
+    end
+
+    it 'can create different size boards' do
+      board1 = Board.new(5, 5)
+      board1.cells
+
+      expect(board1.board_hash["A1"]).to have_attributes(:coordinate => "A1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["A2"]).to have_attributes(:coordinate => "A2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["A3"]).to have_attributes(:coordinate => "A3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["A4"]).to have_attributes(:coordinate => "A4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["A5"]).to have_attributes(:coordinate => "A5", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B1"]).to have_attributes(:coordinate => "B1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B2"]).to have_attributes(:coordinate => "B2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B3"]).to have_attributes(:coordinate => "B3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B4"]).to have_attributes(:coordinate => "B4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["B5"]).to have_attributes(:coordinate => "B5", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C1"]).to have_attributes(:coordinate => "C1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C2"]).to have_attributes(:coordinate => "C2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C3"]).to have_attributes(:coordinate => "C3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C4"]).to have_attributes(:coordinate => "C4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["C5"]).to have_attributes(:coordinate => "C5", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D1"]).to have_attributes(:coordinate => "D1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D2"]).to have_attributes(:coordinate => "D2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D3"]).to have_attributes(:coordinate => "D3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D4"]).to have_attributes(:coordinate => "D4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["D5"]).to have_attributes(:coordinate => "D5", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E1"]).to have_attributes(:coordinate => "E1", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E2"]).to have_attributes(:coordinate => "E2", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E3"]).to have_attributes(:coordinate => "E3", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E4"]).to have_attributes(:coordinate => "E4", :ship => nil, :shot_status => false)
+      expect(board1.board_hash["E5"]).to have_attributes(:coordinate => "E5", :ship => nil, :shot_status => false)
     end
   end
 
@@ -165,7 +225,7 @@ RSpec.describe Board do
   describe '#render' do
     it 'can string for rendering' do
       board.cells
-      board.selected_rows(4)
+      board.selected_rows
       board.place(cruiser, ['A1', 'A2', 'A3'])
 
       expected = "  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n"
@@ -174,7 +234,7 @@ RSpec.describe Board do
 
     it 'can have misses rendered' do
       board.cells
-      board.selected_rows(4)
+      board.selected_rows
       board.place(cruiser, ['A1', 'A2', 'A3'])
       board.board_hash['A4'].fire_upon
       board.board_hash['B3'].fire_upon
@@ -185,7 +245,7 @@ RSpec.describe Board do
 
     it 'can have hits rendered' do
       board.cells
-      board.selected_rows(4)
+      board.selected_rows
       board.place(cruiser, ['A1', 'A2', 'A3'])
       board.board_hash['A1'].fire_upon
       board.board_hash['A2'].fire_upon
@@ -195,7 +255,7 @@ RSpec.describe Board do
 
     it 'can have sunk ships rendered' do
       board.cells
-      board.selected_rows(4)
+      board.selected_rows
       board.place(cruiser, ['A1', 'A2', 'A3'])
       board.board_hash['A1'].fire_upon
       board.board_hash['A2'].fire_upon
@@ -206,7 +266,7 @@ RSpec.describe Board do
 
     it 'can string for rendering showing hidden ships' do
       board.cells
-      board.selected_rows(4)
+      board.selected_rows
       board.place(cruiser, ['A1', 'A2', 'A3'])
 
       expected = "  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n"

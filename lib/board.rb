@@ -1,31 +1,29 @@
 require './lib/cell'
 
 class Board
-  attr_accessor :board_hash, :row_array
+  attr_accessor :board_hash, :row_array, :board_rows, :board_cols
 
-  def initialize
+  def initialize(board_rows, board_cols)
     @board_hash = {}
     @row_array = []
+    @board_rows = board_rows
+    @board_cols = board_cols
   end
 
   # Generates range array using letters, from a given number of rows.
-  def selected_rows(rows_num)
-    @row_array = ('A'.."#{(rows_num + 64).chr}").to_a
+  def selected_rows
+    @row_array = ('A'.."#{(@board_rows + 64).chr}").to_a
   end
-
-  # I don't think I need this while using the times loop in #cells.
-  # def selected_col(col_num)
-  #   ('1'.."#{col_num}").to_a
-  # end
 
   # Creates the board hash, from Cell objects.
   def cells
     combined = []
-    col = 4
-    row = ('A'..'D').to_a
+    selected_rows
+    # col = 4
+    # row = ('A'..'D').to_a
     # Generate the boards hash Keys depending on the selected sizes.
-    row.each do |r|
-      col.times do |i|
+    @row_array.each do |r|
+      @board_cols.times do |i|
         combined << r + (i + 1).to_s
       end
     end
@@ -89,7 +87,7 @@ class Board
     # Take the elements and segregate them by thier column length. Then add letters to the beginning of the new row, and a newline return to the end.
     output = ''
     counter = 0
-    render_string.gsub(/.{4}/) do |blanks|
+    render_string.gsub(/.{#{@board_cols}}/) do |blanks|
       output << (@row_array[counter] + blanks + "\n")
       counter += 1
     end
