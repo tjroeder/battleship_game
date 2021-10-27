@@ -94,6 +94,8 @@ class Board
 
     # 1234 string is a placeholder. Need to update for dynamic board.
     # Add padding to the beginning of the string, add column numbers, and add spaces between all characters. Return final string ready for printing.
-    output = "  " + output.prepend("1234\n").gsub(/./) { |s| s + ' ' }
+    col_string = ('1'.."#{@board_cols}").to_a.join
+   
+    output = "  " + output.prepend("#{col_string}\n").gsub(/./) { |s| s + ' ' }
   end
 end

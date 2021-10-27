@@ -42,7 +42,6 @@ class Game
 
   # Check if user would like to play the game, if not exit the game, or ask for new input.
   def main_menu_check
-    puts "here"
     input = user_input
     until input == 'p'
       if input == 'q'
@@ -56,8 +55,8 @@ class Game
   # Complete all of the board setup for the user and the computer.
   def setup_board
     # Get board size from user input.
-    # puts board_size_string
-    # board_size_check
+    puts board_size_string
+    board_size_check
     
     # Create game objects.
     create_objects
@@ -121,19 +120,23 @@ class Game
   def board_size_check
     # Get number of rows from the user.
     print "Rows> "
-    rows = user_input
-    until rows == /\d+/
+    rows = user_input.to_i
+
+    # If the user doesn't enter an integer request an integer till correct.
+    until rows.is_a?(Integer)
       puts "Wrong input, please enter a digit."
-      rows = user_input
+      rows = user_input.to_i
     end
     @rows = rows
 
     # Get number of columns from the user.
     print "Columns> "
-    columns = user_input
-    until columns == /\d+/
+    columns = user_input.to_i
+
+    # If the user doesn't enter an integer request an integer till correct.
+    until columns.is_a?(Integer)
       puts "Wrong input, please enter a digit."
-      columns = user_input
+      columns = user_input.to_i
     end
     @columns = columns
   end
