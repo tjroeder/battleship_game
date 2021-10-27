@@ -137,4 +137,38 @@ RSpec.describe Game do
       expect(game.show_user_ships_setup).to eq(expected)
     end
   end
+
+  describe '#winner' do
+    it 'can have no winner' do
+      game.create_objects
+
+      expect(game.winner).to eq(false)
+    end
+
+    it 'can have a tie' do
+      game.create_objects
+      game.user_ships[0].health = 0
+      game.user_ships[1].health = 0
+      game.npc_ships[0].health = 0
+      game.npc_ships[1].health = 0
+
+      expect(game.winner).to eq(true)
+    end
+    
+    it 'can have a user win' do
+      game.create_objects
+      game.user_ships[0].health = 0
+      game.user_ships[1].health = 0
+  
+      expect(game.winner).to eq(true)      
+    end
+
+    it 'can have a user win' do
+      game.create_objects
+      game.npc_ships[0].health = 0
+      game.npc_ships[1].health = 0
+  
+      expect(game.winner).to eq(true)      
+    end
+  end
 end
