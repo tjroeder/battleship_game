@@ -1,11 +1,13 @@
 class Computer
   attr_accessor :board, :ships
 
+  # Initialize the board and save the ships given to the computer.
   def initialize(ships)
     @board = Board.new
     @ships = ships
   end
 
+  # Return an array with a list of all empty cell Keys.
   def empty_board_cells
     empty_board = []
     board.board_hash.each_pair do |key, value|
@@ -16,16 +18,18 @@ class Computer
     empty_board
   end
 
-  # board.board_hash.keys
+  # Given an array of cell Keys randomly select one that is currently empty.
   def random_cell(array)
     cell_sel = array.sample
 
+    # Keep choosing random cells until one is empty.
     until board.board_hash[cell_sel].empty? do
       cell_sel = array.sample
     end
     cell_sel
   end
 
+  # Given array return with new adjacent coordinate added to the array.
   def adj_cell(array)
     # Set last letter in ordinal.
     last_letter_ord = array[-1][0].ord
@@ -63,12 +67,14 @@ class Computer
     output_array
   end
   
+  # Validate cells in an array, delete any that are valid and not empty.
   def valid_cells(array)
     array.delete_if do |coord| 
       !board.valid_coordinate?(coord) || !board.board_hash[coord].empty?
     end
   end
 
+  # Place the computers ships.
   def computer_place
     # Place each ship using random coordinates.
     count = 1
@@ -95,6 +101,7 @@ class Computer
     end
   end
 
+  # Select the coordinate to shoot from the available spots on the user board.
   def computer_shoot(user_board)
     unfired_board = []
     user_board.board_hash.each_pair do |key, value|
