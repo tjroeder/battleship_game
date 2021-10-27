@@ -19,7 +19,7 @@ RSpec.describe Game do
       expect(game.npc_ships).to eq([])
     end
 
-    it 'creates num_to_name hash' do
+    it 'creates num_to_name helper hash' do
       expected = {  
                   10 => 'ten',
                    9 => 'nine',
@@ -35,6 +35,15 @@ RSpec.describe Game do
                  }
       expect(game.num_to_name).to eq(expected)
     end
+
+    it 'creates render_to_name helper hash' do
+      expected = {
+                  'M' => 'was a miss',
+                  'H' => 'was a hit',
+                  'X' => 'sunk a ship'
+                  }
+      expect(game.render_to_name).to eq(expected)
+    end
   end
 
   describe '#main_menu' do
@@ -43,30 +52,10 @@ RSpec.describe Game do
     end
   end
 
-  describe '#main_menu_check' do
-    it 'recognizes wrong input' do
-      user_input = '7'
-
-      expected = 'Wrong input, enter p to play or q to quit'
-      expect(game.main_menu_check(user_input)).to eq(expected)
-
-      user_input = 'a'
-      expect(game.main_menu_check(user_input)).to eq(expected)
-
-      user_input = 'asdfasdoufadshfgk'
-      expect(game.main_menu_check(user_input)).to eq(expected)
-    end
-
-    it 'recognizes play input' do
-      expect(game.main_menu_check('p')).to eq(true)
-    end
-  end
-
   describe '#start_game' do
     it 'prints required text to the user' do
       game.create_objects
       
-
       expected =
       "I have laid out my ships on the grid.\n" +
       "You now need to lay out your two ships.\n" +
@@ -144,7 +133,7 @@ RSpec.describe Game do
       coord = ['A1', 'A2', 'A3']
       game.place_user_ship(game.user_ships[0], coord)
 
-      expected = "  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n"
+      expected = "\n  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n"
       expect(game.show_user_ships_setup).to eq(expected)
     end
   end
