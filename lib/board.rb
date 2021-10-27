@@ -42,22 +42,35 @@ class Board
   end
 
   # Check that the coordinates match ship size, are vertical or horizontal and they are not overlapping with previously placed ships.
-  def valid_placement?(ship, coordinates)
-    ship.length == coordinates.length &&
-    coordinates.each_cons(2).all? do |x,y|
-      if x[0] == y[0]
-        x[1].ord + 1 == y[1].ord
-      elsif x[0].ord + 1 == y[0].ord
-        x[1] == y[1]
+  def valid_placement?(ship, coords)
+    size_check(ship, coords) && cons_check(coords) && ship_check(coords)
+  end
+
+  # Check that the coordinates match ship size.
+  def size_check(ship, coords)
+    ship.length == coords.length
+  end
+
+  # Check that the coordinates are vertical or horizontal and not diagonal.
+  def cons_check(coords)
+    coords.each_cons(2).all? do |first, second|
+      if first[0] == second[0]
+        first[1].ord + 1 == second[1].ord
+      elsif first[0].ord + 1 == second[0].ord
+        first[1] == second[1]
       else
         false
       end
-    end &&
-    coordinates.all? do |sel_coord|
+    end
+  end
+
+  # Check that the coordinates are not overlapping with previously placed ships.
+  def ship_check(coords)
+    coords.all? do |sel_coord|
       @board_hash[sel_coord].empty?
     end
   end
-  
+
   # Place the ship into the coordinate Cell objects.
   def place(ship, coordinates)
     coordinates.each do |sel_coord|
@@ -80,7 +93,7 @@ class Board
       output << (@row_array[counter] + blanks + "\n")
       counter += 1
     end
-    
+
     # 1234 string is a placeholder. Need to update for dynamic board.
     # Add padding to the beginning of the string, add column numbers, and add spaces between all characters. Return final string ready for printing.
     output = "  " + output.prepend("1234\n").gsub(/./) { |s| s + ' ' }

@@ -12,7 +12,7 @@ RSpec.describe Board do
     it 'exists' do
       expect(board).to be_instance_of(Board)
     end
-    
+
     it 'initally contains an empty hash' do
       expect(board.board_hash).to eq({})
     end
@@ -33,7 +33,7 @@ RSpec.describe Board do
   describe '#cells' do
     it 'creates hash of cell data' do
       board.cells
-      
+
       expect(board.board_hash["A1"]).to have_attributes(:coordinate => "A1", :ship => nil, :shot_status => false)
       expect(board.board_hash["A2"]).to have_attributes(:coordinate => "A2", :ship => nil, :shot_status => false)
       expect(board.board_hash["A3"]).to have_attributes(:coordinate => "A3", :ship => nil, :shot_status => false)
@@ -52,11 +52,11 @@ RSpec.describe Board do
       expect(board.board_hash["D4"]).to have_attributes(:coordinate => "D4", :ship => nil, :shot_status => false)
     end
   end
-  
+
   describe '#valid_coordinate?' do
     it 'tells us if the coordinates are on the board' do
       board.cells
-      
+
       expect(board.valid_coordinate?("A1")).to eq(true)
       expect(board.valid_coordinate?("D4")).to eq(true)
       expect(board.valid_coordinate?("A5")).to eq(false)
@@ -64,7 +64,50 @@ RSpec.describe Board do
       expect(board.valid_coordinate?("A22")).to eq(false)
     end
   end
-  
+
+    describe '#size_check' do
+      it 'can check if coordinates match ship length' do
+        board.cells
+
+        expect(board.size_check(cruiser, ['A1', 'A2'])).to eq(false)
+        expect(board.size_check(submarine, ['A2', 'A3', 'A4'])).to eq(false)
+      end
+    end
+
+    describe '#cons_check' do
+      it 'can check if the coordinates are not consecutive' do
+        board.cells
+
+        expect(board.cons_check(['A1', 'A2', 'A4'])).to eq(false)
+        expect(board.cons_check(['A1', 'C1'])).to eq(false)
+        expect(board.cons_check(['A3', 'A2', 'A1'])).to eq(false)
+        expect(board.cons_check(['C1', 'B1'])).to eq(false)
+      end
+
+      it 'can verify that coordinates are not diagonal' do
+        board.cells
+
+        expect(board.cons_check(['A1', 'B2', 'C3'])).to eq(false)
+        expect(board.cons_check(['C2', 'D3'])).to eq(false)
+      end
+
+      it 'can verify consecutive cells' do
+        board.cells
+
+        expect(board.cons_check(['A1', 'A2'])).to eq(true)
+        expect(board.cons_check(['B1', 'C1', 'D1'])).to eq(true)
+      end
+    end
+
+    describe '#ship_check' do
+      it 'can check for overlapping ships' do
+        board.cells
+        board.place(cruiser, ['A1', 'A2', 'A3'])
+
+        expect(board.ship_check(['A1', 'B1'])).to eq(false)
+      end
+    end
+
   describe '#valid_placement?' do
     it 'can check if the coordinates match ship length' do
       board.cells
@@ -81,7 +124,7 @@ RSpec.describe Board do
       expect(board.valid_placement?(cruiser, ['A3', 'A2', 'A1'])).to eq(false)
       expect(board.valid_placement?(submarine, ['C1', 'B1'])).to eq(false)
     end
-    
+
     it 'can check valid placements' do
       board.cells
 
@@ -95,11 +138,11 @@ RSpec.describe Board do
       expect(board.valid_placement?(cruiser, ['A1', 'B2', 'C3'])).to eq(false)
       expect(board.valid_placement?(submarine, ['C2', 'D3'])).to eq(false)
     end
-    
+
     it 'can check for overlapping ships' do
       board.cells
       board.place(cruiser, ['A1', 'A2', 'A3'])
-      
+
       expect(board.valid_placement?(submarine, ['A1', 'B1'])).to eq(false)
     end
   end
@@ -111,7 +154,7 @@ RSpec.describe Board do
       cell_1 = board.board_hash['A1']
       cell_2 = board.board_hash['A2']
       cell_3 = board.board_hash['A3']
-      
+
       expect(cell_1.ship).to eq(cruiser)
       expect(cell_2.ship).to eq(cruiser)
       expect(cell_3.ship).to eq(cruiser)
@@ -139,7 +182,7 @@ RSpec.describe Board do
       expected = "  1 2 3 4 \nA . . . M \nB . . M . \nC . . . . \nD . . . . \n"
       expect(board.render).to eq(expected)
     end
-    
+
     it 'can have hits rendered' do
       board.cells
       board.selected_rows(4)
@@ -165,7 +208,7 @@ RSpec.describe Board do
       board.cells
       board.selected_rows(4)
       board.place(cruiser, ['A1', 'A2', 'A3'])
-  
+
       expected = "  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n"
       expect(board.render(true)).to eq(expected)
     end
